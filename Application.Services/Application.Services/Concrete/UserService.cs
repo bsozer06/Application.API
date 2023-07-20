@@ -21,18 +21,20 @@ namespace Application.Services.Concrete
             _users = MockData.GetMockUsers();
         }
 
-        public IEnumerable<UserDto> AddUser(UserDto userDto)
+        public void AddUser(UserDto userDto)
         {
+            if (userDto == null) return;
+
             _users.Add(userDto);
-            return _users;
         }
 
         public UserDto Authenticate(string username, string password)
         {
+            if (username == null || password == null) return null;
+            
             var user = _users.FirstOrDefault(u => u.UserName == username && u.Password == password);
 
-            if (user == null)
-                return null;
+            if (user == null) return null;
 
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
 

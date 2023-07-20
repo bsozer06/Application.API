@@ -17,15 +17,38 @@ namespace Application.API.Controllers.Users
             _userService = userService;
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> Login([FromBody] UserDto userDto)
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
         {
-            var user = _userService.Authenticate(userDto.UserName, userDto.Password);
-            if (user == null)
-                return BadRequest(new { message = "Kullanici veya şifre hatalı!" });
+            var users = _userService.GetUsers();
+            
+            if (users == null) return NotFound(new { message = "This user cannot be found!" });
+            
+            return Ok(users);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        {
+            var user = _userService.Authenticate(loginDto.UserName, loginDto.Password);
+            
+            if (user == null) return BadRequest(new { message = "Username or password is wrong!" });
 
             return Ok(user);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register([FromBody] UserDto userDto)
+        {
+            var isUserExist = _userService.IsUserExist(userDto);
+            
+            if (isUserExist) return BadRequest("The username is available!");
+            
+            _userService.AddUser(userDto);
+
+            return Ok(userDto);   
         }
     }
 }

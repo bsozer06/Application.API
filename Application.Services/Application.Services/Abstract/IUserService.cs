@@ -6,7 +6,7 @@ namespace Application.Services.Abstract
     {
         UserDto Authenticate(string username, string password);
         IEnumerable<UserDto> GetUsers();
-        IEnumerable<UserDto> AddUser(UserDto userDto);
+        void AddUser(UserDto userDto);
         bool IsUserExist(UserDto userDto);
     }
 }
