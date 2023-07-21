@@ -17,6 +17,7 @@ namespace Application.API.Controllers.Users
             _userService = userService;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {

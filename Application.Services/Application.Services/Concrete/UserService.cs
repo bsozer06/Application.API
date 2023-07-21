@@ -28,6 +28,28 @@ namespace Application.Services.Concrete
             _users.Add(userDto);
         }
 
+        public void RemoveUser(int userId)
+        {
+            var user = _users.FirstOrDefault(u => u.Id == userId);
+            
+            if (user == null) return;
+
+            _users.Remove(user);
+        }
+
+        public void UpdateUser(UserDto userDto)
+        {
+            if (userDto == null) return;
+
+            var user = _users.FirstOrDefault(u => u.Id == userDto.Id);
+
+            user.UserName = userDto?.UserName ?? user.UserName;
+            user.Surname = userDto?.Surname ?? user.Surname;
+            user.Name = userDto?.Name ?? user.Name;   
+            user.Id = userDto?.Id ?? user.Id;
+            user.Password = userDto?.Password ?? user.Password;
+        }
+
         public UserDto Authenticate(string username, string password)
         {
             if (username == null || password == null) return null;
@@ -57,7 +79,6 @@ namespace Application.Services.Concrete
             return user;
         }
 
-
         public IEnumerable<UserDto> GetUsers()
         {
             return _users.Select(u =>
@@ -65,6 +86,24 @@ namespace Application.Services.Concrete
                 u.Password = null;
                 return u;
             });
+        }
+
+        public UserDto GetUser(int userId)
+        {
+            var user = _users.FirstOrDefault(u => u.Id == userId);
+            
+            if (user == null) return null;
+
+            return user;
+        }
+
+        public UserDto GetUser(string userName)
+        {
+            var user = _users.FirstOrDefault(u => u.UserName == userName);
+
+            if (user == null) return null;
+
+            return user;
         }
 
         public bool IsUserExist(UserDto userDto)
