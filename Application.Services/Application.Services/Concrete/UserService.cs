@@ -43,11 +43,11 @@ namespace Application.Services.Concrete
 
             var user = _users.FirstOrDefault(u => u.Id == userDto.Id);
 
-            user.UserName = userDto?.UserName ?? user.UserName;
-            user.Surname = userDto?.Surname ?? user.Surname;
-            user.Name = userDto?.Name ?? user.Name;   
-            user.Id = userDto?.Id ?? user.Id;
-            user.Password = userDto?.Password ?? user.Password;
+            user!.UserName = userDto?.UserName ?? user.UserName;
+            user!.Surname = userDto?.Surname ?? user.Surname;
+            user!.Name = userDto?.Name ?? user.Name;   
+            user!.Id = userDto?.Id ?? user.Id;
+            user!.Password = userDto?.Password ?? user.Password;
         }
 
         public UserDto Authenticate(string username, string password)
